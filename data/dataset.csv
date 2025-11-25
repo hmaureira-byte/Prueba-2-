@@ -1,0 +1,17 @@
+producto,categoria,precio,ventas_diarias
+Empanada,Pastelería,1500,120
+Completo,Comida Rápida,2200,95
+Sopaipilla,Pastelería,500,200
+Pizza Individual,Comida Rápida,3000,70
+Hamburguesa,Comida Rápida,3500,65
+Brownie,Postres,1800,40
+Helado,Postres,1000,110
+Café Caliente,Bebestibles,1200,150
+Jugo Natural,Bebestibles,1800,90
+Chocolate Caliente,Bebestibles,1500,130
+Tarta de Frutas,Postres,2500,55
+Pan de Ajo,Pastelería,800,180           
+Croissant,Pastelería,2000,75
+Ensalada César,Comida Rápida,2800,60
+Licuado de Frutas,Bebestibles,2200,85
+Galletas,Postres,900,140
