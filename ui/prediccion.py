@@ -1,43 +1,40 @@
 import streamlit as st
-import torch
-import torch.nn as nn
-import os
+import pandas as pd
+import pickle
 
 def mostrar():
-    st.title("Predicción de Ventas con Red Neuronal")
+    st.title("Predicción de Ventas")
 
-    class Modelo(nn.Module):
-        def __init__(self):
-            super().__init__()
-            self.fc = nn.Sequential(
-                nn.Linear(1, 16),
-                nn.ReLU(),
-                nn.Linear(16, 1)
-            )
-        def forward(self, x):
-            return self.fc(x)
+    # Cargar modelo
+    with open("models/model_lr.pkl", "rb") as f:
+        model = pickle.load(f)
 
-    modelo_path = "data/modelo_streamlit.pth"
+    st.subheader("Ingresa los datos para predecir:")
 
-    if os.path.exists(modelo_path):
-        checkpoint = torch.load(modelo_path, weights_only=False)
-        modelo = Modelo()
-        modelo.load_state_dict(checkpoint["state_dict"])
-        modelo.eval()
+    precio = st.number_input("Precio del producto", min_value=500, max_value=3000, value=1500)
+    temp = st.number_input("Temperatura (°C)", min_value=-5.0, max_value=40.0, value=20.0)
+    promo = st.checkbox("¿Hay promoción?", value=False)
 
-        precio_min = checkpoint["precio_min"]
-        precio_max = checkpoint["precio_max"]
-        ventas_min = checkpoint["ventas_min"]
-        ventas_max = checkpoint["ventas_max"]
+    # Valores faltantes automáticos:
+    # día de la semana (0 = lunes)
+    dia_semana = 0
+    # is_weekend: fin de semana = 1 si dia_semana >=5
+    is_weekend = 1 if dia_semana >= 5 else 0
 
-        precio = st.number_input("Precio del producto a predecir", min_value=100, max_value=5000)
+    # Crear dataframe con EXACTAMENTE las columnas usadas al entrenar
+    X = pd.DataFrame({
+        "precio": [precio],
+        "promocion": [1 if promo else 0],
+        "temp_c": [temp],
+        "dia_semana": [dia_semana],
+        "is_weekend": [is_weekend]
+    })
 
-        if st.button("Predecir Ventas"):
-            precio_norm = (precio - precio_min) / (precio_max - precio_min)
-            entrada = torch.tensor([[precio_norm]], dtype=torch.float32)
-            pred_norm = modelo(entrada).item()
-            pred = pred_norm * (ventas_max - ventas_min) + ventas_min
-            pred_entero = max(1, int(round(pred)))
-            st.success(f"Ventas estimadas: {pred_entero} unidades por día")
-    else:
-        st.warning("Primero debes entrenar y guardar el modelo.")
+    # Predecir
+    pred = model.predict(X)[0]
+
+    st.subheader(f"Predicción estimada: **{pred:.0f} ventas**")
+    st.write("Este valor corresponde a una estimación generada por un modelo de regresión lineal entrenado sobre datos históricos simulados.")
+    st.write("El modelo intenta capturar relaciones entre precio, clima, promociones y ventas.")
+
+    st.write("Nota: Esta predicción es una estimación basada en el modelo entrenado y puede variar según las condiciones reales.")  

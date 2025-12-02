@@ -1,20 +1,11 @@
 import streamlit as st
 
+
 def mostrar():
-    st.title("🍽️ Sistema de Análisis de Ventas de Comida")
-
-    st.markdown("""
-    ### Bienvenido/a a la aplicación del proyecto  
-    Esta herramienta permite:
-
-    - 📊 Analizar ventas de productos de comida  
-    - 🧮 Visualizar datos y relaciones importantes  
-    - 🤖 Realizar predicciones mediante un modelo de aprendizaje automático  
-      
-    **Integrantes del grupo:**
-    - 👩‍💻 *Helen Maureira* — Dataset, Preprocesamiento, Análisis de Datos  
-    - 👨‍💻 *Francisco Provoste* — Modelo predictivo, Pantallas adicionales  
-    """)
-
-    st.info("Selecciona una sección desde el menú lateral.")
-
+    st.title("Sistema de Predicción de Ventas")
+    st.write("Bienvenida/o al sistema de prediccion de ventas de empanadas.")
+    st.write("Utiliza el menú lateral para navegar entre las diferentes secciones:")    
+    st.write("- 📊 Análisis Exploratorio de Ventas: Visualiza gráficos y tendencias de ventas históricas."
+             " Analiza cómo factores como la temperatura y las promociones afectan las ventas."
+             " Esta sección te ayudará a entender mejor los datos."
+             )

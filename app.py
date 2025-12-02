@@ -1,20 +1,31 @@
 import streamlit as st
-from ui import pantalla_principal, analisis_datos, prediccion
 
-st.set_page_config(page_title="Ventas de Comida", layout="wide")
+from ui.pantalla_principal import mostrar as pantalla_principal
+from ui.analisis_datos import mostrar as analisis_datos
+from ui.prediccion import mostrar as prediccion
 
-st.sidebar.title("Menú")
-
-opcion = st.sidebar.radio(
-    "Selecciona una sección:",
-    ["Inicio", "Análisis de Datos", "Predicción de Ventas"]
+# Configuración de la página
+st.set_page_config(
+    page_title="Sistema de Predicción de Ventas",
+    page_icon="📊",
+    layout="wide"
 )
 
-if opcion == "Inicio":
-    pantalla_principal.mostrar()
+# Título principal
+st.title("📈 Sistema de Predicción de Ventas de Empanadas")
 
-elif opcion == "Análisis de Datos":
-    analisis_datos.mostrar()
+# Menú lateral
+seccion = st.sidebar.selectbox(
+    "Navegación",
+    ["Inicio", "Análisis de datos", "Predicción"]
+)
 
-elif opcion == "Predicción de Ventas":
-    prediccion.mostrar()
+# Navegación
+if seccion == "Inicio":
+    pantalla_principal()
+
+elif seccion == "Análisis de datos":
+    analisis_datos()
+
+elif seccion == "Predicción":
+    prediccion()

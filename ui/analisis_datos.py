@@ -2,47 +2,40 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-plt.style.use("ggplot")
-
 def mostrar():
-    st.title("Análisis Exploratorio de Ventas de Comida")
+	st.title("Visualización de Datos")
+	df = pd.read_csv("data/dataset.csv")
 
-    # --- Cargar dataset ---
-    data = pd.read_csv("data/dataset.csv")
+	st.metric("Promedio de ventas", round(df["ventas_diarias"].mean(), 1))
+	st.metric("Venta mínima", df["ventas_diarias"].min())
+	st.metric("Venta máxima", df["ventas_diarias"].max())
 
-    st.subheader("Vista general del dataset")
-    st.dataframe(data)
 
-    # --- Análisis 1: Histograma ---
-    st.subheader("Distribución de variables numéricas")
-    numeric_cols = data.select_dtypes("number").columns
-    variable = st.selectbox("Selecciona una variable", numeric_cols)
+	# Gráficos aquí...
 
-    fig, ax = plt.subplots()
-    ax.hist(data[variable], bins=10)
-    ax.set_title(f"Distribución de {variable}")
-    ax.set_xlabel(variable)
-    ax.set_ylabel("Frecuencia")
-    st.pyplot(fig)
+	# Convertir fecha
+	df["date"] = pd.to_datetime(df["date"])
 
-    # --- Análisis 2: Ventas promedio por categoría ---
-    st.subheader("Ventas promedio por categoría")
-    cat_avg = data.groupby("categoria")["ventas_diarias"].mean()
+	# ---- Gráfico de tendencia ----
+	st.subheader("Tendencia de ventas diarias")
+	fig, ax = plt.subplots()
+	ax.plot(df["date"], df["ventas_diarias"])
+	ax.set_xlabel("Fecha")
+	ax.set_ylabel("Ventas diarias")
+	st.pyplot(fig)
 
-    fig2, ax2 = plt.subplots()
-    ax2.bar(cat_avg.index, cat_avg.values)
-    ax2.set_title("Ventas Promedio por Categoría")
-    ax2.set_ylabel("Ventas diarias promedio")
-    ax2.set_xticklabels(cat_avg.index, rotation=20)
-    st.pyplot(fig2)
+	# ---- Ventas por temperatura ----
+	st.subheader("Relación entre temperatura y ventas")
+	fig2, ax2 = plt.subplots()
+	ax2.scatter(df["temp_c"], df["ventas_diarias"], alpha=0.7)
+	ax2.set_xlabel("Temperatura (°C)")
+	ax2.set_ylabel("Ventas diarias")
+	st.pyplot(fig2)
 
-    # --- Análisis 3: Relación precio vs ventas ---
-    st.subheader("Relación entre precio y ventas")
-    fig3, ax3 = plt.subplots()
-    ax3.scatter(data["precio"], data["ventas_diarias"])
-    ax3.set_xlabel("Precio")
-    ax3.set_ylabel("Ventas diarias")
-    ax3.set_title("Precio vs Ventas")
-    st.pyplot(fig3)
-    st.write("Se observa cómo varían las ventas diarias en función del precio de los productos.")
-    st.write("Este análisis ayuda a entender mejor el comportamiento de las ventas en relación con los precios.")
+	# ---- Promociones ----
+	st.subheader("Promociones vs ventas")
+	fig3, ax3 = plt.subplots()
+	ax3.boxplot([df[df["promocion"] == 0]["ventas_diarias"],
+	df[df["promocion"] == 1]["ventas_diarias"]],
+	labels=["Sin promo", "Con promo"])
+	st.pyplot(fig3)
