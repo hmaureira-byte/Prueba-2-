@@ -9,6 +9,6 @@
 
 **Datos:** dataset sintético (1 año) con variables: date, producto, precio, promocion, temp_c, dia_semana, is_weekend, ventas_diarias.
 
-**Modelo:** Regresión lineal (interpretabilidad y robustez). Métricas calculadas: MAE, RMSE.
+**Modelo:** Random Forest (interpretabilidad y robustez). Métricas calculadas: MAE, RMSE y R².
 
 **Limitaciones:** Datos simulados; modelo simple. Recomendado: ampliar dataset con histórico real, incluir variables adicionales (competencia, stock, día festivo) y probar modelos no lineales.
