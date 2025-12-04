@@ -9,4 +9,4 @@
 ## Francisco Provoste
 - Desarrollo del módulo de modelo/predicción original (mejoras avanzadas).
 - Integración final y pruebas.
-- Despliegue y mejoras de la red neuronal.
+- Despliegue y mejoras de el modelo de prediccion.
